@@ -15,11 +15,8 @@ public class Application {
 	}
 
 	@GetMapping("/hello")
-	public boolean hello() {
-
-		String a = "Raisetech";
-
-		return StringUtils.isNotEmpty(a);
+	public String hello() {
+		return "Hello, world!";
     }
 
 }
