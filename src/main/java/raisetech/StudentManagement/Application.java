@@ -3,7 +3,12 @@ package raisetech.StudentManagement;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -20,14 +25,8 @@ public class Application {
     }
 
     @GetMapping("/students")
-    public String getAllStudent() {
-        String studentInfo = "";
-        List<String> studentList = new ArrayList<>();
-        for (Student student : repository.selectAllData()) {
-            studentInfo = student.getName() + " " + student.getAge() + "歳";
-            studentList.add(studentInfo);
-        }
-        return studentList.toString();
+    public List<Student> getAllStudent() {
+        return repository.selectAllData();
     }
 
     @GetMapping("/student")
