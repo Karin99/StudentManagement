@@ -1,5 +1,6 @@
 package raisetech.StudentManagement.repository;
 
+import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Select;
 import raisetech.StudentManagement.data.Student;
@@ -9,7 +10,7 @@ import java.util.List;
 
 /**
  * 受講生情報を扱うリポジトリ。
- *
+ * <p>
  * 全件検索や単一条件での検索、コース情報の検索が行えるクラスです。
  */
 @Mapper
@@ -26,5 +27,9 @@ public interface StudentRepository {
 
     @Select("SELECT * FROM students_courses")
     List<StudentCourse> searchCourse();
+
+    @Insert("INSERT INTO students (id, name, kana, nickname, email, address, age, gender, remark) " +
+            "values (#{id}, #{name}, #{kana}, #{nickname}, #{email}, #{address}, #{age}, #{gender}, #{remark})")
+    void submit(Student student);
 
 }

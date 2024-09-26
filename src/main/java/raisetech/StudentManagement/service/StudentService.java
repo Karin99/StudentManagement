@@ -25,4 +25,8 @@ public class StudentService {
     public List<StudentCourse> searchStudentCourseList() {
         return repository.searchCourse();
     }
+
+    public void submitPost(Student student){
+        repository.submit(student);
+    }
 }
