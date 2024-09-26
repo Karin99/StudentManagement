@@ -58,7 +58,7 @@ public class StudentController {
         // 第28回課題：新規受講生情報を登録する処理を実装する
         // おまけ課題：コース情報も一緒に登録できるように実装する。コースは単体でよい。
 
-        service.submitPost(studentDetail.getStudent());
+        service.submitPost(studentDetail.getStudent(), studentDetail.getStudentCourse());
         return "redirect:/studentList";
     }
 }

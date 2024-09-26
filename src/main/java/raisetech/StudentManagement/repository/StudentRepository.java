@@ -32,4 +32,8 @@ public interface StudentRepository {
             "values (#{id}, #{name}, #{kana}, #{nickname}, #{email}, #{address}, #{age}, #{gender}, #{remark})")
     void submit(Student student);
 
+    @Insert("INSERT INTO students_courses (course_id, student_id, course, start_at, complete_at) " +
+            "values (#{courseId}, #{studentId}, #{course}, #{startAt}, #{completeAt})")
+    void submitCourse(StudentCourse studentCourse);
+
 }

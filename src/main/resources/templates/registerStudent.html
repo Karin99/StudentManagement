@@ -42,6 +42,28 @@
         <label for="remark">備考：</label>
         <input type="text" id="remark" th:field="*{student.remark}" required/>
     </div>
+    <br>
+    <div>
+        <label for="courseId">コースID：</label>
+        <input type="text" id="courseId" th:field="*{studentCourse.courseId}" required/>
+    </div>
+    <div>
+        <label for="studentId">受講生ID：</label>
+        <input type="text" id="studentId" th:field="*{studentCourse.studentId}" required/>
+    </div>
+    <div>
+        <label for="course">受講希望コース：</label>
+        <input type="text" id="course" th:field="*{studentCourse.course}" required/>
+    </div>
+    <div>
+        <label for="startAt">受講開始日（例：2020-01-01T00:00:00）：</label>
+        <input type="text" id="startAt" th:field="*{studentCourse.startAt}" required/>
+    </div>
+    <div>
+        <label for="completeAt">受講修了予定日（例：2020-12-31T00:00:00）：</label>
+        <input type="text" id="completeAt" th:field="*{studentCourse.completeAt}" required/>
+    </div>
+    <br>
     <div>
         <button type="submit">登録</button>
     </div>

@@ -26,7 +26,8 @@ public class StudentService {
         return repository.searchCourse();
     }
 
-    public void submitPost(Student student){
+    public void submitPost(Student student, StudentCourse studentCourse){
         repository.submit(student);
+        repository.submitCourse(studentCourse);
     }
 }
