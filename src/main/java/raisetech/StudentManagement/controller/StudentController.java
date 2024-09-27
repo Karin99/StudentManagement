@@ -11,7 +11,6 @@ import raisetech.StudentManagement.controller.converter.StudentConverter;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
 import raisetech.StudentManagement.domain.StudentDetail;
-import raisetech.StudentManagement.repository.StudentRepository;
 import raisetech.StudentManagement.service.StudentService;
 
 import java.util.List;
@@ -19,15 +18,13 @@ import java.util.List;
 @Controller
 public class StudentController {
 
-    private StudentService service;
-    private StudentConverter converter;
-    private StudentRepository repository;
+    private final StudentService service;
+    private final StudentConverter converter;
 
     @Autowired
-    public StudentController(StudentService service, StudentConverter converter,StudentRepository repository) {
+    public StudentController(StudentService service, StudentConverter converter) {
         this.service = service;
         this.converter = converter;
-        this.repository = repository;
     }
 
     @GetMapping("/studentList")
@@ -39,14 +36,11 @@ public class StudentController {
         return "studentList";
     }
 
-    // @GetMapping("/studentCourseList")
-    // public List<StudentCourse> getStudentCourseList() {
-    //     return service.searchStudentCourseList();
-    // }
-
     @GetMapping("/newStudent")
     public String newStudent(Model model) {
-        model.addAttribute("studentDetail", new StudentDetail());
+        StudentDetail studentDetail = new StudentDetail();
+        studentDetail.setStudentsCourses(List.of(new StudentCourse()));
+        model.addAttribute("studentDetail", studentDetail);
         return "registerStudent";
     }
 
@@ -55,10 +49,7 @@ public class StudentController {
         if (result.hasErrors()) {
             return "registerStudent";
         }
-        // 第28回課題：新規受講生情報を登録する処理を実装する
-        // おまけ課題：コース情報も一緒に登録できるように実装する。コースは単体でよい。
-
-        service.submitPost(studentDetail.getStudent(), studentDetail.getStudentCourse());
+        service.submitPost(studentDetail);
         return "redirect:/studentList";
     }
 }
