@@ -30,7 +30,7 @@ public class StudentService {
     }
 
     @Transactional
-    public void submitPost(StudentDetail studentDetail) {
+    public void registerStudent(StudentDetail studentDetail) {
         repository.submitStudent(studentDetail.getStudent());
         for (StudentCourse studentCourse : studentDetail.getStudentsCourses()) {
             studentCourse.setStudentId(studentDetail.getStudent().getId());
@@ -38,5 +38,15 @@ public class StudentService {
             studentCourse.setCompleteAt(LocalDateTime.now().plusYears(1));
             repository.submitStudentCourse(studentCourse);
         }
+    }
+
+    public Student getStudentById(String id){
+        return repository.getStudentById(id);
+    }
+
+    // 受講生情報を更新する
+    @Transactional
+    public void updateStudent(Student student) {
+        repository.updateStudent(student);
     }
 }

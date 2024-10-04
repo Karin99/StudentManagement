@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.Update;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
 
@@ -38,4 +39,11 @@ public interface StudentRepository {
             "VALUES(#{studentId}, #{course}, #{startAt}, #{completeAt})")
     void submitStudentCourse(StudentCourse studentCourse);
 
+    @Select("SELECT * FROM students WHERE id = #{id}")
+    Student getStudentById(String id);
+
+    @Update("UPDATE students SET name = #{name}, kana = #{kana}, nickname = #{nickname}, email = #{email}, " +
+            "address = #{address}, age = #{age}, gender = #{gender}, remark = #{remark}" +
+            "WHERE id = #{id}")
+    void updateStudent(Student student);
 }
