@@ -27,8 +27,14 @@ public interface StudentRepository {
     @Select("SELECT * FROM students where is_deleted='0'")
     List<Student> search();
 
+    @Select("SELECT * FROM students WHERE id = #{id}")
+    Student searchStudent(String id);
+
     @Select("SELECT * FROM students_courses")
     List<StudentCourse> searchCourse();
+
+    @Select("SELECT * FROM students_courses WHERE student_id = #{studentId}")
+    List<StudentCourse> searchStudentCourses(String studentId);
 
     @Insert("INSERT INTO students(name, kana, nickname, email, address, age, gender, remark, is_deleted) " +
             "VALUES(#{name}, #{kana}, #{nickname}, #{email}, #{address}, #{age}, #{gender}, #{remark}, 0)")
@@ -39,11 +45,12 @@ public interface StudentRepository {
             "VALUES(#{studentId}, #{course}, #{startAt}, #{completeAt})")
     void submitStudentCourse(StudentCourse studentCourse);
 
-    @Select("SELECT * FROM students WHERE id = #{id}")
-    Student getStudentById(String id);
-
     @Update("UPDATE students SET name = #{name}, kana = #{kana}, nickname = #{nickname}, email = #{email}, " +
-            "address = #{address}, age = #{age}, gender = #{gender}, remark = #{remark}" +
+            "address = #{address}, age = #{age}, gender = #{gender}, remark = #{remark}, is_deleted = #{isDeleted} "  +
             "WHERE id = #{id}")
     void updateStudent(Student student);
+
+    @Update("UPDATE students_courses SET course = #{course} WHERE course_id = #{courseId}")
+    void updateStudentCourse(StudentCourse studentCourse);
+
 }
