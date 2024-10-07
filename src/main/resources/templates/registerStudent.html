@@ -28,19 +28,20 @@
     </div>
     <div>
         <label for="age">年齢：</label>
-        <input type="text" id="age" th:field="*{student.age}" />
+        <input type="text" id="age" th:field="*{student.age}"/>
     </div>
     <div>
         <label for="gender">性別（男,女,その他）：</label>
-        <input type="text" id="gender" th:field="*{student.gender}" />
+        <input type="text" id="gender" th:field="*{student.gender}"/>
     </div>
     <div>
         <label for="remark">備考：</label>
-        <input type="text" id="remark" th:field="*{student.remark}" />
+        <input type="text" id="remark" th:field="*{student.remark}"/>
     </div>
     <div th:each="course, stat : *{studentsCourses}">
         <label for="course" th:for="studentCourse.__${stat.index}__.course">受講コース名：</label>
-        <input type="text" id="course" th:id="studentCourse.__${stat.index}__.course" th:field="*{studentsCourses[__${stat.index}__].course}" required/>
+        <input type="text" id="course" th:id="studentCourse.__${stat.index}__.course"
+               th:field="*{studentsCourses[__${stat.index}__].course}" required/>
     </div>
     <div>
         <button type="submit">登録</button>
