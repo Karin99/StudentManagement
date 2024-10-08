@@ -5,6 +5,9 @@ import lombok.Setter;
 
 import java.time.LocalDateTime;
 
+/**
+ * 受講生コース情報を扱うオブジェクト
+ */
 @Getter
 @Setter
 public class StudentCourse {
