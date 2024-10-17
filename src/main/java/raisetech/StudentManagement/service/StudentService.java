@@ -7,6 +7,8 @@ import raisetech.StudentManagement.controller.converter.StudentConverter;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
 import raisetech.StudentManagement.domain.StudentDetail;
+import raisetech.StudentManagement.exception.IdNotFoundException;
+import raisetech.StudentManagement.exception.StudentNotFoundException;
 import raisetech.StudentManagement.repository.StudentRepository;
 
 import java.time.LocalDateTime;
@@ -34,9 +36,13 @@ public class StudentService {
      *
      * @return 受講生詳細一覧（全件）
      */
-    public List<StudentDetail> searchStudentList() {
+    public List<StudentDetail> searchStudentList() throws StudentNotFoundException {
         List<Student> studentList = repository.search();
         List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
+
+        if (studentList.isEmpty()){
+            throw new StudentNotFoundException("登録されている受講生はいません。");
+        }
         return converter.convertStudentDetails(studentList, studentCourseList);
     }
 
@@ -47,8 +53,13 @@ public class StudentService {
      * @param id 受講生ID
      * @return 受講生詳細情報
      */
-    public StudentDetail searchStudent(String id) {
+    public StudentDetail searchStudent(String id) throws IdNotFoundException {
         Student student = repository.searchStudent(id);
+
+        if (student == null) {
+            throw new IdNotFoundException("ID " + id + " の学生は登録されていません。");
+        }
+
         List<StudentCourse> studentCourseList = repository.searchStudentCourse(student.getId());
         return new StudentDetail(student, studentCourseList);
     }

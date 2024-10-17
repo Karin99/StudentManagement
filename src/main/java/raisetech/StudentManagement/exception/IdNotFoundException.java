@@ -1,21 +1,9 @@
 package raisetech.StudentManagement.exception;
 
-public class CustomException extends Exception {
+public class IdNotFoundException extends Exception {
 
-    public CustomException(String message) {
+    public IdNotFoundException(String message) {
         super(message);
-    }
-
-    public CustomException() {
-        super();
-    }
-
-    public CustomException(String message, Throwable cause) {
-        super(message, cause);
-    }
-
-    public CustomException(Throwable cause) {
-        super(cause);
     }
 
 }
