@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.service.StudentService;
@@ -77,5 +78,14 @@ public class StudentController {
     public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {
         service.updateStudent(studentDetail);
         return ResponseEntity.ok(studentDetail.getStudent().getName() + "さんの情報を更新しました。");
+    }
+
+    // エクセプションを起こすメソッドをつくっておく
+    @GetMapping("exception")
+    public String exception(@RequestParam(required = false) String param) throws Exception {
+        if (param == null) {
+            throw new Exception("I/O Exception occurred");
+        }
+        return "Success!";
     }
 }
