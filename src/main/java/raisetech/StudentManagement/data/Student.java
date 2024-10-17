@@ -16,7 +16,7 @@ import lombok.Setter;
 public class Student {
 
     @Size(min = 1, max = 3)
-    @Pattern(regexp = "\\d+", message = "IDは数字のみにする必要があります")
+    @Pattern(regexp = "^\\d+$", message = "IDは数字のみにする必要があります")
     private String id;
 
     @NotBlank
