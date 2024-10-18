@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.StudentManagement.domain.StudentDetail;
-import raisetech.StudentManagement.exception.IdNotFoundException;
-import raisetech.StudentManagement.exception.StudentNotFoundException;
+import raisetech.StudentManagement.exception.NotFoundException;
 import raisetech.StudentManagement.service.StudentService;
 
 import java.util.List;
@@ -43,7 +42,7 @@ public class StudentController {
      * @return 受講生詳細一覧（全件）
      */
     @GetMapping("/studentList")
-    public List<StudentDetail> getStudentList() throws StudentNotFoundException {
+    public List<StudentDetail> getStudentList() throws NotFoundException {
         return service.searchStudentList();
     }
 
@@ -54,7 +53,7 @@ public class StudentController {
      * @return 受講生情報
      */
     @GetMapping("/student/{id}")
-    public StudentDetail getStudent(@PathVariable @Size(min = 1, max = 3) @Pattern(regexp = "\\d+") String id) throws IdNotFoundException {
+    public StudentDetail getStudent(@PathVariable @Size(min = 1, max = 3) @Pattern(regexp = "\\d+") String id) throws NotFoundException {
         return service.searchStudent(id);
     }
 
@@ -76,7 +75,7 @@ public class StudentController {
      * @return 実行結果
      */
     @PutMapping("/updateStudent")
-    public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) {
+    public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) throws NotFoundException {
         service.updateStudent(studentDetail);
         return ResponseEntity.ok(studentDetail.getStudent().getName() + "さんの情報を更新しました。");
     }

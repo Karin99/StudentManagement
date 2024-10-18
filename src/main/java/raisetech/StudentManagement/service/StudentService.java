@@ -7,8 +7,7 @@ import raisetech.StudentManagement.controller.converter.StudentConverter;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
 import raisetech.StudentManagement.domain.StudentDetail;
-import raisetech.StudentManagement.exception.IdNotFoundException;
-import raisetech.StudentManagement.exception.StudentNotFoundException;
+import raisetech.StudentManagement.exception.NotFoundException;
 import raisetech.StudentManagement.repository.StudentRepository;
 
 import java.time.LocalDateTime;
@@ -36,12 +35,12 @@ public class StudentService {
      *
      * @return 受講生詳細一覧（全件）
      */
-    public List<StudentDetail> searchStudentList() throws StudentNotFoundException {
+    public List<StudentDetail> searchStudentList() throws NotFoundException {
         List<Student> studentList = repository.search();
         List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
 
         if (studentList.isEmpty()){
-            throw new StudentNotFoundException("登録されている受講生はいません。");
+            throw new NotFoundException("登録されている受講生はいません。");
         }
         return converter.convertStudentDetails(studentList, studentCourseList);
     }
@@ -53,11 +52,11 @@ public class StudentService {
      * @param id 受講生ID
      * @return 受講生詳細情報
      */
-    public StudentDetail searchStudent(String id) throws IdNotFoundException {
+    public StudentDetail searchStudent(String id) throws NotFoundException {
         Student student = repository.searchStudent(id);
 
         if (student == null) {
-            throw new IdNotFoundException("ID " + id + " の学生は登録されていません。");
+            throw new NotFoundException("ID " + id + " の学生は登録されていません。");
         }
 
         List<StudentCourse> studentCourseList = repository.searchStudentCourse(student.getId());
@@ -104,7 +103,14 @@ public class StudentService {
      * @param studentDetail 受講生詳細
      */
     @Transactional
-    public void updateStudent(StudentDetail studentDetail) {
+    public void updateStudent(StudentDetail studentDetail) throws NotFoundException {
+
+        String id = studentDetail.getStudent().getId();
+        Student student = repository.searchStudent(id);
+        if (student == null){
+            throw new NotFoundException("ID " + id + " の学生は登録されていません。");
+        }
+
         repository.updateStudent(studentDetail.getStudent());
         studentDetail.getStudentCourseList()
                 .forEach(studentCourse -> repository.updateStudentCourse(studentCourse));

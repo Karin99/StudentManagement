@@ -5,8 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import raisetech.StudentManagement.exception.IdNotFoundException;
-import raisetech.StudentManagement.exception.StudentNotFoundException;
+import raisetech.StudentManagement.exception.NotFoundException;
 
 @ControllerAdvice
 public class ExceptionHandler {
@@ -16,18 +15,8 @@ public class ExceptionHandler {
      * @param ex
      * @return NOT_FOUND
      */
-    @org.springframework.web.bind.annotation.ExceptionHandler(StudentNotFoundException.class)
-    public ResponseEntity<String> handleStudentNotFoundException(Exception ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("エラーメッセージ：\n" + ex.getMessage());
-    }
-
-    /**
-     * 登録されていない受講生IDで受講生詳細検索を実行したときの例外処理です。
-     * @param ex
-     * @return NOT_FOUND
-     */
-    @org.springframework.web.bind.annotation.ExceptionHandler(IdNotFoundException.class)
-    public ResponseEntity<String> handleIdNotFoundException(Exception ex) {
+    @org.springframework.web.bind.annotation.ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<String> handleNotFoundException(Exception ex){
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("エラーメッセージ：\n" + ex.getMessage());
     }
 
