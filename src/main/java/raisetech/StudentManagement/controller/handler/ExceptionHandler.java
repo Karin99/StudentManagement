@@ -11,7 +11,7 @@ import raisetech.StudentManagement.exception.NotFoundException;
 public class ExceptionHandler {
 
     /**
-     * 受講生が登録されていない状態で受講生一覧検索を実行したときの例外処理です。
+     * 受講生一覧検索、受講生詳細検索、受講生更新で指定した受講生がDBに登録されていない場合の例外処理です。
      * @param ex
      * @return NOT_FOUND
      */
