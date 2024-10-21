@@ -1,5 +1,6 @@
 package raisetech.StudentManagement.controller.handler;
 
+import io.swagger.v3.oas.annotations.media.Schema;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import raisetech.StudentManagement.exception.NotFoundException;
 
+@Schema(description = "例外")
 @ControllerAdvice
 public class ExceptionHandler {
 
@@ -17,7 +19,9 @@ public class ExceptionHandler {
      */
     @org.springframework.web.bind.annotation.ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(Exception ex){
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("エラーメッセージ：\n" + ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage("エラーコード：\n404\n" + ex.getMessage() + "\n");
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse.getErrorMessage());
     }
 
     /**
@@ -30,12 +34,15 @@ public class ExceptionHandler {
         StringBuilder errors = new StringBuilder();
 
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            errors.append("エラーメッセージ: ")
+            errors.append("エラーコード：\n400\nエラーメッセージ：\n")
                     .append(error.getDefaultMessage())
                     .append("\n");
         }
 
-        return new ResponseEntity<>(errors.toString(), HttpStatus.BAD_REQUEST);
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage(errors.toString());
+
+        return new ResponseEntity<>(errorResponse.getErrorMessage(), HttpStatus.BAD_REQUEST);
     }
 
     /**
@@ -45,6 +52,8 @@ public class ExceptionHandler {
      */
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneralException(Exception ex) {
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("エラーメッセージ：\n" + ex.getMessage());
+        ErrorResponse errorResponse = new ErrorResponse();
+        errorResponse.setErrorMessage("エラーコード：\n500\n" + ex.getMessage() + "\n");
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse.getErrorMessage());
     }
 }
