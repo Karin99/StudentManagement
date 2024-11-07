@@ -135,4 +135,16 @@ class StudentServiceTest {
         verify(repository, times(1)).updateStudent(student);
         verify(repository, times(studentCourseList.size())).updateStudentCourse(any(StudentCourse.class));
     }
+
+    @Test
+    void 受講生詳細の更新_NotFound例外が処理されること(){
+        StudentDetail studentDetail = new StudentDetail();
+        when(repository.searchStudent(studentDetail.getStudent().getId())).thenReturn(null);
+
+        Assertions.assertThrows(NotFoundException.class, () -> {
+            sut.updateStudent(studentDetail);
+        });
+
+        verify(repository, times(1)).searchStudent(studentDetail.getStudent().getId());
+    }
 }
