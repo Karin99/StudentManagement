@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
-import raisetech.StudentManagement.exception.NotFoundException;
+import raisetech.StudentManagement.exception.CustomNotFoundException;
 
 @Schema(description = "例外")
 @ControllerAdvice
@@ -17,7 +17,7 @@ public class ExceptionHandler {
      * @param ex
      * @return NOT_FOUND
      */
-    @org.springframework.web.bind.annotation.ExceptionHandler(NotFoundException.class)
+    @org.springframework.web.bind.annotation.ExceptionHandler(CustomNotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(Exception ex){
         ErrorResponse errorResponse = new ErrorResponse();
         errorResponse.setErrorMessage("エラーコード：\n404\n" + ex.getMessage() + "\n");
