@@ -19,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import raisetech.StudentManagement.controller.handler.ErrorResponse;
 import raisetech.StudentManagement.domain.StudentDetail;
-import raisetech.StudentManagement.exception.CustomNotFoundException;
+import raisetech.StudentManagement.exception.NotFoundException;
 import raisetech.StudentManagement.service.StudentService;
 
 import java.util.List;
@@ -82,7 +82,7 @@ public class StudentController {
             }
     )
     @GetMapping("/studentList")
-    public List<StudentDetail> getStudentList() throws CustomNotFoundException {
+    public List<StudentDetail> getStudentList() throws NotFoundException {
         return service.searchStudentList();
     }
 
@@ -126,7 +126,7 @@ public class StudentController {
             }
     )
     @GetMapping("/student/{id}")
-    public StudentDetail getStudent(@PathVariable @Size(min = 1, max = 3) @Pattern(regexp = "\\d+") String id) throws CustomNotFoundException {
+    public StudentDetail getStudent(@PathVariable @Size(min = 1, max = 3) @Pattern(regexp = "\\d+") String id) throws NotFoundException {
         return service.searchStudent(id);
     }
 
@@ -244,7 +244,7 @@ public class StudentController {
     )
 
     @PutMapping("/updateStudent")
-    public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) throws CustomNotFoundException {
+    public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) throws NotFoundException {
         service.updateStudent(studentDetail);
         return ResponseEntity.ok(studentDetail.getStudent().getName() + "さんの情報を更新しました。");
     }

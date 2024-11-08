@@ -10,7 +10,7 @@ import raisetech.StudentManagement.controller.converter.StudentConverter;
 import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
 import raisetech.StudentManagement.domain.StudentDetail;
-import raisetech.StudentManagement.exception.CustomNotFoundException;
+import raisetech.StudentManagement.exception.NotFoundException;
 import raisetech.StudentManagement.repository.StudentRepository;
 
 import java.util.ArrayList;
@@ -40,7 +40,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void 受講生詳細の一覧検索_リポジトリとコンバーターの処置が適切に呼び出せていること() throws CustomNotFoundException {
+    void 受講生詳細の一覧検索_リポジトリとコンバーターの処置が適切に呼び出せていること() throws NotFoundException {
         // 事前準備Before
         List<Student> studentList = List.of(new Student());
         List<StudentCourse> studentCourseList = new ArrayList<>();
@@ -60,12 +60,12 @@ class StudentServiceTest {
 
     @Test
     void 受講生詳細の一覧検索_NotFound例外が処理されること() {
-        Assertions.assertThrows(CustomNotFoundException.class, () ->
+        Assertions.assertThrows(NotFoundException.class, () ->
             sut.searchStudentList());
     }
 
     @Test
-    void 受講生詳細検索_リポジトリの処理が適切に呼び出せていること() throws CustomNotFoundException {
+    void 受講生詳細検索_リポジトリの処理が適切に呼び出せていること() throws NotFoundException {
         String id = new String();
         Student student = new Student();
         List<StudentCourse> studentCourseList = new ArrayList<>();
@@ -80,10 +80,10 @@ class StudentServiceTest {
     }
 
     @Test
-    void 受講生詳細検索_NotFound例外が処理されること() throws CustomNotFoundException {
+    void 受講生詳細検索_NotFound例外が処理されること() throws NotFoundException {
         String id = new String();
 
-        Assertions.assertThrows(CustomNotFoundException.class, () ->
+        Assertions.assertThrows(NotFoundException.class, () ->
             sut.searchStudent(id));
     }
 
@@ -115,7 +115,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void 受講生詳細の更新_リポジトリが適切に呼び出せていること() throws CustomNotFoundException {
+    void 受講生詳細の更新_リポジトリが適切に呼び出せていること() throws NotFoundException {
         Student student = new Student();
         List<StudentCourse> studentCourseList = new ArrayList<>();
         StudentDetail studentDetail = new StudentDetail(student, studentCourseList);
@@ -129,12 +129,12 @@ class StudentServiceTest {
     }
 
     @Test
-    void 受講生詳細の更新_NotFound例外が処理されること() throws CustomNotFoundException {
+    void 受講生詳細の更新_NotFound例外が処理されること() throws NotFoundException {
         Student student = new Student();
         List<StudentCourse> studentCourseList = new ArrayList<>();
         StudentDetail studentDetail = new StudentDetail(student, studentCourseList);
 
-        Assertions.assertThrows(CustomNotFoundException.class, () ->
+        Assertions.assertThrows(NotFoundException.class, () ->
             sut.updateStudent(studentDetail));
     }
 }
