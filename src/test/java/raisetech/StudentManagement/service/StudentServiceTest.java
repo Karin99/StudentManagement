@@ -60,8 +60,6 @@ class StudentServiceTest {
 
     @Test
     void 受講生詳細の一覧検索_NotFound例外が処理されること() {
-        List<Student> studentList = new ArrayList<>();
-
         Assertions.assertThrows(CustomNotFoundException.class, () ->
             sut.searchStudentList());
     }
@@ -132,7 +130,9 @@ class StudentServiceTest {
 
     @Test
     void 受講生詳細の更新_NotFound例外が処理されること() throws CustomNotFoundException {
-        StudentDetail studentDetail = new StudentDetail();
+        Student student = new Student();
+        List<StudentCourse> studentCourseList = new ArrayList<>();
+        StudentDetail studentDetail = new StudentDetail(student, studentCourseList);
 
         Assertions.assertThrows(CustomNotFoundException.class, () ->
             sut.updateStudent(studentDetail));
