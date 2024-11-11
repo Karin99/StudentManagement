@@ -54,12 +54,13 @@ class StudentServiceTest {
         verify(repository, times(1)).search();
         verify(repository, times(1)).searchStudentCourseList();
         verify(converter, times(1)).convertStudentDetails(studentList, studentCourseList);
-
-        // 後処理
     }
 
     @Test
     void 受講生詳細の一覧検索_NotFound例外が処理されること() {
+        List<Student> studentList = repository.search();
+        when(repository.search()).thenReturn(studentList);
+
         Assertions.assertThrows(NotFoundException.class, () ->
             sut.searchStudentList());
     }
