@@ -40,7 +40,7 @@ public class StudentService {
         List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
 
         if (studentList.isEmpty()){
-            throw new NotFoundException("登録されている受講生はいません。");
+            throw new NotFoundException("登録されている受講生はいません");
         }
         return converter.convertStudentDetails(studentList, studentCourseList);
     }
@@ -56,7 +56,7 @@ public class StudentService {
         Student student = repository.searchStudent(id);
 
         if (student == null) {
-            throw new NotFoundException("ID " + id + " の学生は登録されていません。");
+            throw new NotFoundException("ID " + id + " の学生は登録されていません");
         }
 
         List<StudentCourse> studentCourseList = repository.searchStudentCourse(student.getId());
@@ -76,7 +76,7 @@ public class StudentService {
 
         repository.registerStudent(student);
         studentDetail.getStudentCourseList().forEach(studentCourse -> {
-            initStudentCourse(studentCourse, student);
+            initStudentCourse(studentCourse, student.getId());
             repository.registerStudentCourse(studentCourse);
         });
         return studentDetail;
@@ -86,12 +86,12 @@ public class StudentService {
      * 受講生コース情報を登録する際の初期情報を設定する。
      *
      * @param studentCourse 受講生コース情報
-     * @param student       受講生
+     * @param id            受講生ID
      */
-     void initStudentCourse(StudentCourse studentCourse, Student student) {
+     void initStudentCourse(StudentCourse studentCourse, String id) {
         LocalDateTime now = LocalDateTime.now();
 
-        studentCourse.setStudentId(student.getId());
+        studentCourse.setStudentId(id);
         studentCourse.setStartAt(now);
         studentCourse.setCompleteAt(now.plusYears(1));
     }
@@ -108,7 +108,7 @@ public class StudentService {
         String id = studentDetail.getStudent().getId();
         Student student = repository.searchStudent(id);
         if (student == null){
-            throw new NotFoundException("ID " + id + " の学生は登録されていません。");
+            throw new NotFoundException("ID " + id + " の学生は登録されていません");
         }
 
         repository.updateStudent(studentDetail.getStudent());
