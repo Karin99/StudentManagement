@@ -13,12 +13,13 @@ import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.exception.NotFoundException;
 import raisetech.StudentManagement.repository.StudentRepository;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -40,7 +41,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void 受講生詳細の一覧検索_リポジトリとコンバーターの処置が適切に呼び出せていること() throws NotFoundException {
+    void 受講生詳細の一覧検索_正常系_リポジトリとコンバーターの処置が適切に呼び出せていること() throws NotFoundException {
         // 事前準備Before
         List<Student> studentList = List.of(new Student());
         List<StudentCourse> studentCourseList = new ArrayList<>();
@@ -57,66 +58,68 @@ class StudentServiceTest {
     }
 
     @Test
-    void 受講生詳細の一覧検索_NotFound例外が処理されること() {
+    void 受講生詳細の一覧検索_異常系_受講生情報がないときにがNotFoundExceptionがスローされること() {
         List<Student> studentList = repository.search();
         when(repository.search()).thenReturn(studentList);
 
         Assertions.assertThrows(NotFoundException.class, () ->
-            sut.searchStudentList());
+                sut.searchStudentList());
     }
 
     @Test
-    void 受講生詳細検索_リポジトリの処理が適切に呼び出せていること() throws NotFoundException {
+    void 受講生詳細検索_正常系_リポジトリの処理が適切に呼び出せていること() throws NotFoundException {
         String id = new String();
         Student student = new Student();
         List<StudentCourse> studentCourseList = new ArrayList<>();
         when(repository.searchStudent(id)).thenReturn(student);
         when(repository.searchStudentCourse(student.getId())).thenReturn(studentCourseList);
 
-        sut.searchStudent(id);
+        StudentDetail expected = new StudentDetail(student, studentCourseList);
+
+        StudentDetail actual = sut.searchStudent(id);
 
         verify(repository, times(1)).searchStudent(id);
         verify(repository, times(1)).searchStudentCourse(student.getId());
-
+        assertEquals(expected.getStudent().getId(), actual.getStudent().getId());
     }
 
     @Test
-    void 受講生詳細検索_NotFound例外が処理されること() throws NotFoundException {
+    void 受講生詳細検索_異常系_検索対象のidが存在しない場合にNotFoundExceptionがスローされること() throws NotFoundException {
         String id = new String();
 
-        Assertions.assertThrows(NotFoundException.class, () ->
-            sut.searchStudent(id));
+        assertThrows(NotFoundException.class, () ->
+                sut.searchStudent(id));
     }
 
     @Test
-    void 受講生登録_リポジトリとコース情報初期設定の処理が適切に呼び出せていること() {
+    void 受講生登録_正常系_リポジトリとコース情報初期設定の処理が適切に呼び出せていること() {
         Student student = new Student();
-        List<StudentCourse> studentCourseList = new ArrayList<>();
+        StudentCourse studentCourse = new StudentCourse();
+        List<StudentCourse> studentCourseList = List.of(studentCourse);
         StudentDetail studentDetail = new StudentDetail(student, studentCourseList);
-        StudentService spy = spy(sut);
 
         sut.registerStudent(studentDetail);
 
-        verify(repository, times(1)).registerStudent(studentDetail.getStudent());
-        verify(spy, times(studentCourseList.size())).initStudentCourse(any(StudentCourse.class), eq(student));
-        verify(repository, times(studentCourseList.size())).registerStudentCourse(any(StudentCourse.class));
+        verify(repository, times(1)).registerStudent(student);
+        verify(repository, times(studentCourseList.size())).registerStudentCourse(studentCourse);
     }
 
     @Test
-    void 受講生コース情報登録_情報処理が適切に行われていること() {
+    void 受講生コース情報登録_正常系_情報処理が適切に行われていること() {
         Student student = new Student();
         StudentCourse studentCourse = new StudentCourse();
 
-        sut.initStudentCourse(studentCourse, student);
+        sut.initStudentCourse(studentCourse, student.getId());
 
-        Assertions.assertEquals(student.getId(), studentCourse.getStudentId());
-        Assertions.assertNotNull(studentCourse.getStartAt());
-        Assertions.assertNotNull(studentCourse.getCompleteAt());
-        Assertions.assertEquals(studentCourse.getStartAt().plusYears(1), studentCourse.getCompleteAt());
+        assertEquals(student.getId(), studentCourse.getStudentId());
+        assertEquals(LocalDateTime.now().getYear(), studentCourse.getStartAt().getYear());
+        assertEquals(LocalDateTime.now().getMonth(), studentCourse.getStartAt().getMonth());
+        assertEquals(LocalDateTime.now().getDayOfMonth(), studentCourse.getStartAt().getDayOfMonth());
+        assertEquals(studentCourse.getStartAt().plusYears(1), studentCourse.getCompleteAt());
     }
 
     @Test
-    void 受講生詳細の更新_リポジトリが適切に呼び出せていること() throws NotFoundException {
+    void 受講生詳細の更新_正常系_リポジトリが適切に呼び出せていること() throws NotFoundException {
         Student student = new Student();
         List<StudentCourse> studentCourseList = new ArrayList<>();
         StudentDetail studentDetail = new StudentDetail(student, studentCourseList);
@@ -130,12 +133,12 @@ class StudentServiceTest {
     }
 
     @Test
-    void 受講生詳細の更新_NotFound例外が処理されること() throws NotFoundException {
+    void 受講生詳細の更新_異常系_更新対象のidが存在しない場合にNotFoundExceptionがスローされること() throws NotFoundException {
         Student student = new Student();
         List<StudentCourse> studentCourseList = new ArrayList<>();
         StudentDetail studentDetail = new StudentDetail(student, studentCourseList);
 
-        Assertions.assertThrows(NotFoundException.class, () ->
-            sut.updateStudent(studentDetail));
+        assertThrows(NotFoundException.class, () ->
+                sut.updateStudent(studentDetail));
     }
 }
