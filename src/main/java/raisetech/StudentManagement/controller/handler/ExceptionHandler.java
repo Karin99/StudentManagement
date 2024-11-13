@@ -20,7 +20,7 @@ public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(NotFoundException.class)
     public ResponseEntity<String> handleNotFoundException(Exception ex){
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setErrorMessage("エラーコード：\n404\n" + ex.getMessage() + "\n");
+        errorResponse.setErrorMessage("エラーコード：404\nエラーメッセージ：\n" + ex.getMessage() + "\n");
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse.getErrorMessage());
     }
 
@@ -34,7 +34,7 @@ public class ExceptionHandler {
         StringBuilder errors = new StringBuilder();
 
         for (FieldError error : ex.getBindingResult().getFieldErrors()) {
-            errors.append("エラーコード：\n400\nエラーメッセージ：\n")
+            errors.append("エラーコード：400\nエラーメッセージ：\n")
                     .append(error.getDefaultMessage())
                     .append("\n");
         }
@@ -53,7 +53,7 @@ public class ExceptionHandler {
     @org.springframework.web.bind.annotation.ExceptionHandler(Exception.class)
     public ResponseEntity<String> handleGeneralException(Exception ex) {
         ErrorResponse errorResponse = new ErrorResponse();
-        errorResponse.setErrorMessage("エラーコード：\n500\n" + ex.getMessage() + "\n");
+        errorResponse.setErrorMessage("エラーコード：500\nエラーメッセージ：\n" + ex.getMessage() + "\n");
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(errorResponse.getErrorMessage());
     }
 }

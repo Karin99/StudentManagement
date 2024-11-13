@@ -40,7 +40,7 @@ public class StudentService {
         List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
 
         if (studentList.isEmpty()){
-            throw new NotFoundException("登録されている受講生はいません。");
+            throw new NotFoundException("登録されている受講生はいません");
         }
         return converter.convertStudentDetails(studentList, studentCourseList);
     }
@@ -56,7 +56,7 @@ public class StudentService {
         Student student = repository.searchStudent(id);
 
         if (student == null) {
-            throw new NotFoundException("ID " + id + " の学生は登録されていません。");
+            throw new NotFoundException("ID " + id + " の学生は登録されていません");
         }
 
         List<StudentCourse> studentCourseList = repository.searchStudentCourse(student.getId());
@@ -108,7 +108,7 @@ public class StudentService {
         String id = studentDetail.getStudent().getId();
         Student student = repository.searchStudent(id);
         if (student == null){
-            throw new NotFoundException("ID " + id + " の学生は登録されていません。");
+            throw new NotFoundException("ID " + id + " の学生は登録されていません");
         }
 
         repository.updateStudent(studentDetail.getStudent());

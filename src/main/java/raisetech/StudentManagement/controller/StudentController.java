@@ -246,7 +246,7 @@ public class StudentController {
     @PutMapping("/updateStudent")
     public ResponseEntity<String> updateStudent(@RequestBody @Valid StudentDetail studentDetail) throws NotFoundException {
         service.updateStudent(studentDetail);
-        return ResponseEntity.ok(studentDetail.getStudent().getName() + "さんの情報を更新しました。");
+        return ResponseEntity.ok(studentDetail.getStudent().getName() + "さんの情報を更新しました");
     }
 
     /**
@@ -272,7 +272,7 @@ public class StudentController {
             }
     )
     @GetMapping("/exception")
-    public String exception() throws Exception {
-        throw new Exception();
+    public ResponseEntity<String> throwException() throws Exception {
+        throw new Exception("このAPIは現在利用できません");
     }
 }
