@@ -15,14 +15,12 @@ import raisetech.StudentManagement.data.StudentCourse;
 import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.service.StudentService;
 
-import java.util.List;
 import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -68,34 +66,33 @@ class StudentControllerTest {
         String id = "テスト";
         mockMvc.perform(get("/student/{id}", id))
                 .andDo(print())
-                .andExpect(status().isInternalServerError());
+                .andExpect(status().isBadRequest());
     }
 
     @Test
-    void 正常系_受講生詳細の登録が実行できること() throws Exception {
-
-        Student student = new Student();
-        student.setName("江並公史");
-        student.setKana("エナミコウジ");
-        student.setNickname("こうじ");
-        student.setEmail("test@example.com");
-        student.setAddress("奈良県,奈良市");
-        student.setAge(36);
-        student.setGender("男");
-        student.setRemark("登録テストです");
-        StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setStudentId(student.getId());
-        studentCourse.setCourse("ピアノコース");
-        List<StudentCourse> studentCourseList = List.of(studentCourse);
-        StudentDetail studentDetail = new StudentDetail(student, studentCourseList);
-
-        String request = objectMapper.writeValueAsString(studentDetail);
-
-        when(service.registerStudent(any(StudentDetail.class))).thenReturn(studentDetail);
+    void 正常系_受講生詳細の登録が実行できて空で返ってくること() throws Exception {
 
         mockMvc.perform(post("/registerStudent")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(request))
+                        .content("""
+                                {
+                                    "student" : {
+                                        "name" : "江並公史",
+                                        "kana" : "エナミコウジ",
+                                        "nickname" : "こーじ",
+                                        "email" : "test@example.com",
+                                        "address" : "奈良県,奈良市",
+                                        "age" : 36,
+                                        "gender" : "男",
+                                        "remark" : "登録テストです"
+                                    },
+                                    "studentCourseList" : [
+                                        {
+                                            "course" : "ピアノコース"
+                                        }
+                                    ]
+                                }
+                                """))
                 .andDo(print())
                 .andExpect(status().isOk());
 
@@ -103,35 +100,38 @@ class StudentControllerTest {
     }
 
     @Test
-    void 正常系_受講生詳細の更新が実行できること() throws Exception {
-        Student student = new Student();
-        student.setId("999");
-        student.setName("江並公史");
-        student.setKana("エナミコウジ");
-        student.setNickname("こうじ");
-        student.setEmail("test@example.com");
-        student.setAddress("奈良県,奈良市");
-        student.setAge(36);
-        student.setGender("男");
-        student.setRemark("更新テストです");
-        student.setDeleted(true);
-        StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setStudentId(student.getId());
-        studentCourse.setCourse("ピアノコース");
-        List<StudentCourse> studentCourseList = List.of(studentCourse);
-        StudentDetail studentDetail = new StudentDetail(student, studentCourseList);
-
-        String request = objectMapper.writeValueAsString(studentDetail);
-
-        when(service.registerStudent(any(StudentDetail.class))).thenReturn(studentDetail);
-
+    void 正常系_受講生詳細の更新が実行できて更新完了メッセージが返ってくること() throws Exception {
 
         mockMvc.perform(put("/updateStudent")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(request))
+                        .content("""
+                                {
+                                    "student" : {
+                                        "id" : "999",
+                                        "name" : "江並公史",
+                                        "kana" : "エナミコウジ",
+                                        "nickname" : "こーじ",
+                                        "email" : "test@example.com",
+                                        "address" : "奈良県,奈良市",
+                                        "age" : 36,
+                                        "gender" : "男",
+                                        "remark" : "更新テストです",
+                                        "isDeleted" : true
+                                    },
+                                    "studentCourseList" : [
+                                        {
+                                            "courseId" : "99999",
+                                            "studentId" : "999",
+                                            "course" : "ピアノコース",
+                                            "startAt" : "2024-01-01 00:00:00",
+                                            "completeAt" : "2025-01-01 00:00:00"
+                                        }
+                                    ]
+                                }
+                                """))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().string(student.getName() + "さんの情報を更新しました"));
+                .andExpect(content().string("江並公史さんの情報を更新しました"));
 
         verify(service, times(1)).updateStudent(any(StudentDetail.class));
     }

@@ -126,7 +126,10 @@ public class StudentController {
             }
     )
     @GetMapping("/student/{id}")
-    public StudentDetail getStudent(@PathVariable @Size(min = 1, max = 3) @Pattern(regexp = "\\d+") String id) throws NotFoundException {
+    public StudentDetail getStudent(@PathVariable
+                                    @Size(min = 1, max = 3)
+                                    @Pattern(regexp = "\\d+", message = "IDは数字のみにする必要があります")
+                                    String id) throws NotFoundException {
         return service.searchStudent(id);
     }
 
