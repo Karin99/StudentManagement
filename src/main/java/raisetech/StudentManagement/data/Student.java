@@ -39,7 +39,7 @@ public class Student {
     private String address;
 
     @NotNull(message = "年齢が入力されていません")
-    private int age;
+    private Integer age;
 
     @NotBlank(message = "性別が入力されていません")
     @Pattern(regexp = "男|女|その他", message = "性別は「男」「女」「その他」のいずれかで選択してください")
