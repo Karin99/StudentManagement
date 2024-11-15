@@ -1,13 +1,11 @@
 package raisetech.StudentManagement.data;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 
 import java.time.LocalDateTime;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@WebMvcTest(StudentCourse.class)
 class StudentCourseTest {
 
     @Test
