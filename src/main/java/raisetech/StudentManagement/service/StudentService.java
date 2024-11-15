@@ -10,7 +10,6 @@ import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.exception.NotFoundException;
 import raisetech.StudentManagement.repository.StudentRepository;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -39,7 +38,7 @@ public class StudentService {
         List<Student> studentList = repository.search();
         List<StudentCourse> studentCourseList = repository.searchStudentCourseList();
 
-        if (studentList.isEmpty()){
+        if (studentList.isEmpty()) {
             throw new NotFoundException("登録されている受講生はいません");
         }
         return converter.convertStudentDetails(studentList, studentCourseList);
@@ -76,24 +75,10 @@ public class StudentService {
 
         repository.registerStudent(student);
         studentDetail.getStudentCourseList().forEach(studentCourse -> {
-            initStudentCourse(studentCourse, student.getId());
+            StudentCourse.initStudentCourse(studentCourse, student.getId());
             repository.registerStudentCourse(studentCourse);
         });
         return studentDetail;
-    }
-
-    /**
-     * 受講生コース情報を登録する際の初期情報を設定する。
-     *
-     * @param studentCourse 受講生コース情報
-     * @param id            受講生ID
-     */
-     void initStudentCourse(StudentCourse studentCourse, String id) {
-        LocalDateTime now = LocalDateTime.now();
-
-        studentCourse.setStudentId(id);
-        studentCourse.setStartAt(now);
-        studentCourse.setCompleteAt(now.plusYears(1));
     }
 
     /**
@@ -107,7 +92,7 @@ public class StudentService {
 
         String id = studentDetail.getStudent().getId();
         Student student = repository.searchStudent(id);
-        if (student == null){
+        if (student == null) {
             throw new NotFoundException("ID " + id + " の学生は登録されていません");
         }
 
