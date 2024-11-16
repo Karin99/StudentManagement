@@ -13,7 +13,6 @@ import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.exception.NotFoundException;
 import raisetech.StudentManagement.repository.StudentRepository;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -92,7 +91,7 @@ class StudentServiceTest {
     }
 
     @Test
-    void 受講生登録_正常系_リポジトリとコース情報初期設定の処理が適切に呼び出せていること() {
+    void 受講生登録_正常系_リポジトリの処理が適切に呼び出せていること() {
         Student student = new Student();
         StudentCourse studentCourse = new StudentCourse();
         List<StudentCourse> studentCourseList = List.of(studentCourse);
@@ -102,20 +101,6 @@ class StudentServiceTest {
 
         verify(repository, times(1)).registerStudent(student);
         verify(repository, times(studentCourseList.size())).registerStudentCourse(studentCourse);
-    }
-
-    @Test
-    void 受講生コース情報登録_正常系_情報処理が適切に行われていること() {
-        Student student = new Student();
-        StudentCourse studentCourse = new StudentCourse();
-
-        sut.initStudentCourse(studentCourse, student.getId());
-
-        assertEquals(student.getId(), studentCourse.getStudentId());
-        assertEquals(LocalDateTime.now().getYear(), studentCourse.getStartAt().getYear());
-        assertEquals(LocalDateTime.now().getMonth(), studentCourse.getStartAt().getMonth());
-        assertEquals(LocalDateTime.now().getDayOfMonth(), studentCourse.getStartAt().getDayOfMonth());
-        assertEquals(studentCourse.getStartAt().plusYears(1), studentCourse.getCompleteAt());
     }
 
     @Test

@@ -34,4 +34,10 @@ public class StudentCourse {
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
     private LocalDateTime completeAt;
 
+    public static StudentCourse initStudentCourse(StudentCourse studentCourse, String id, LocalDateTime now) {
+        studentCourse.setStudentId(id);
+        studentCourse.setStartAt(now);
+        studentCourse.setCompleteAt(now.plusYears(1));
+        return studentCourse;
+    }
 }

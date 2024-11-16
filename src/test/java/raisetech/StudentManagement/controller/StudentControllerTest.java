@@ -1,6 +1,5 @@
 package raisetech.StudentManagement.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
 import jakarta.validation.Validator;
@@ -36,8 +35,6 @@ class StudentControllerTest {
 
     @MockBean
     private StudentService service;
-
-    private final ObjectMapper objectMapper = new ObjectMapper();
 
     private final Validator validator = Validation.buildDefaultValidatorFactory().getValidator();
 
