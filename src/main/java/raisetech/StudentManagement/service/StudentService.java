@@ -10,6 +10,7 @@ import raisetech.StudentManagement.domain.StudentDetail;
 import raisetech.StudentManagement.exception.NotFoundException;
 import raisetech.StudentManagement.repository.StudentRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -75,7 +76,7 @@ public class StudentService {
 
         repository.registerStudent(student);
         studentDetail.getStudentCourseList().forEach(studentCourse -> {
-            StudentCourse.initStudentCourse(studentCourse, student.getId());
+            StudentCourse.initStudentCourse(studentCourse, student.getId(), LocalDateTime.now());
             repository.registerStudentCourse(studentCourse);
         });
         return studentDetail;
