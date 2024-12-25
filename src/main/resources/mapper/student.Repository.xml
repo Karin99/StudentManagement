@@ -56,7 +56,7 @@
         WHERE id = #{id}
     </update>
 
-    <!--  受講生IDに紐づいた受講生コース情報のコース名を更新  -->
+    <!--  受講生コースIDに紐づいた受講生コース情報のコース名を更新  -->
     <update id="updateStudentCourse" parameterType="raisetech.StudentManagement.data.StudentCourse">
         UPDATE students_courses SET
         course = #{course}
