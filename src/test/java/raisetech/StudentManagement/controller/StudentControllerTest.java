@@ -143,15 +143,16 @@ class StudentControllerTest {
 
     @Test
     void 正常系_入力チェック_受講生詳細の受講生で適切な値を入力したときに異常が発生しないこと() {
-        Student student = new Student();
-        student.setId("999");
-        student.setName("江並公史");
-        student.setKana("エナミコウジ");
-        student.setNickname("こーじ");
-        student.setEmail("test@example.com");
-        student.setAddress("奈良県,奈良市");
-        student.setAge(36);
-        student.setGender("男");
+        Student student = Student.builder()
+                .id("999")
+                .name("江並公史")
+                .kana("エナミコウジ")
+                .nickname("こーじ")
+                .email("test@example.com")
+                .address("奈良県,奈良市")
+                .age(36)
+                .gender("男")
+                .build();
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
@@ -161,15 +162,16 @@ class StudentControllerTest {
 
     @Test
     void 異常系_入力チェック_受講生詳細の受講生でIDに4文字以上の数字を用いたとき入力チェックに掛かること() {
-        Student student = new Student();
-        student.setId("99999");
-        student.setName("江並公史");
-        student.setKana("エナミコウジ");
-        student.setNickname("こーじ");
-        student.setEmail("test@example.com");
-        student.setAddress("奈良県,奈良市");
-        student.setAge(36);
-        student.setGender("男");
+        Student student = Student.builder()
+                .id("99999")        // 不正な数字4桁のID
+                .name("江並公史")
+                .kana("エナミコウジ")
+                .nickname("こーじ")
+                .email("test@example.com")
+                .address("奈良県,奈良市")
+                .age(36)
+                .gender("男")
+                .build();
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
@@ -179,15 +181,16 @@ class StudentControllerTest {
 
     @Test
     void 異常系_入力チェック_受講生詳細の受講生でIDに数字以外を用いたとき入力チェックに掛かること() {
-        Student student = new Student();
-        student.setId("テスト");
-        student.setName("江並公史");
-        student.setKana("エナミコウジ");
-        student.setNickname("こーじ");
-        student.setEmail("test@example.com");
-        student.setAddress("奈良県,奈良市");
-        student.setAge(36);
-        student.setGender("男");
+        Student student = Student.builder()
+                .id("テスト")      // 不正な文字のID
+                .name("江並公史")
+                .kana("エナミコウジ")
+                .nickname("こーじ")
+                .email("test@example.com")
+                .address("奈良県,奈良市")
+                .age(36)
+                .gender("男")
+                .build();
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
@@ -197,14 +200,15 @@ class StudentControllerTest {
 
     @Test
     void 異常系_入力チェック_受講生詳細の受講生で名前が空欄だったとき入力チェックに掛かること() {
-        Student student = new Student();
-        student.setName(null);
-        student.setKana("エナミコウジ");
-        student.setNickname("こーじ");
-        student.setEmail("test@example.com");
-        student.setAddress("奈良県,奈良市");
-        student.setAge(36);
-        student.setGender("男");
+        Student student = Student.builder()
+                .name(null)         //不正な空の名前
+                .kana("エナミコウジ")
+                .nickname("こーじ")
+                .email("test@example.com")
+                .address("奈良県,奈良市")
+                .age(36)
+                .gender("男")
+                .build();
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
@@ -214,14 +218,15 @@ class StudentControllerTest {
 
     @Test
     void 異常系_入力チェック_受講生詳細の受講生でフリガナが空欄だったときに入力チェックに掛かること() {
-        Student student = new Student();
-        student.setName("江並公史");
-        student.setKana(null);
-        student.setNickname("こーじ");
-        student.setEmail("test@example.com");
-        student.setAddress("奈良県,奈良市");
-        student.setAge(36);
-        student.setGender("男");
+        Student student = Student.builder()
+                .name("江並公史")
+                .kana(null)     //不正な空のフリガナ
+                .nickname("こーじ")
+                .email("test@example.com")
+                .address("奈良県,奈良市")
+                .age(36)
+                .gender("男")
+                .build();
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
@@ -231,14 +236,15 @@ class StudentControllerTest {
 
     @Test
     void 異常系_入力チェック_受講生詳細の受講生でフリガナが全角カタカナ以外だったときに入力チェックに掛かること() {
-        Student student = new Student();
-        student.setName("江並公史");
-        student.setKana("えなみこうじ");
-        student.setNickname("こーじ");
-        student.setEmail("test@example.com");
-        student.setAddress("奈良県,奈良市");
-        student.setAge(36);
-        student.setGender("男");
+        Student student = Student.builder()
+                .name("江並公史")
+                .kana("えなみこうじ")     //不正なひらがなのふりがな
+                .nickname("こーじ")
+                .email("test@example.com")
+                .address("奈良県,奈良市")
+                .age(36)
+                .gender("男")
+                .build();
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
@@ -249,14 +255,15 @@ class StudentControllerTest {
 
     @Test
     void 異常系_入力チェック_受講生詳細の受講生でニックネームが空欄だったときに入力チェックに掛かること() {
-        Student student = new Student();
-        student.setName("江並公史");
-        student.setKana("エナミコウジ");
-        student.setNickname(null);
-        student.setEmail("test@example.com");
-        student.setAddress("奈良県,奈良市");
-        student.setAge(36);
-        student.setGender("男");
+        Student student = Student.builder()
+                .name("江並公史")
+                .kana("エナミコウジ")
+                .nickname(null)     //不正な空のニックネーム
+                .email("test@example.com")
+                .address("奈良県,奈良市")
+                .age(36)
+                .gender("男")
+                .build();
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
@@ -266,14 +273,15 @@ class StudentControllerTest {
 
     @Test
     void 異常系_入力チェック_受講生詳細の受講生でメールアドレスが空欄だったときに入力チェックに掛かること() {
-        Student student = new Student();
-        student.setName("江並公史");
-        student.setKana("エナミコウジ");
-        student.setNickname("こーじ");
-        student.setEmail(null);
-        student.setAddress("奈良県,奈良市");
-        student.setAge(36);
-        student.setGender("男");
+        Student student = Student.builder()
+                .name("江並公史")
+                .kana("エナミコウジ")
+                .nickname("こーじ")
+                .email(null)        //不正な空のメールアドレス
+                .address("奈良県,奈良市")
+                .age(36)
+                .gender("男")
+                .build();
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
@@ -283,14 +291,15 @@ class StudentControllerTest {
 
     @Test
     void 異常系_入力チェック_受講生詳細の受講生でメールアドレスが不正な形式だったときに入力チェックに掛かること() {
-        Student student = new Student();
-        student.setName("江並公史");
-        student.setKana("エナミコウジ");
-        student.setNickname("こーじ");
-        student.setEmail("test@koji@example.com");
-        student.setAddress("奈良県,奈良市");
-        student.setAge(36);
-        student.setGender("男");
+        Student student = Student.builder()
+                .name("江並公史")
+                .kana("エナミコウジ")
+                .nickname("こーじ")
+                .email("test@koji@example.com")     //不正な形式のメールアドレス
+                .address("奈良県,奈良市")
+                .age(36)
+                .gender("男")
+                .build();
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
@@ -300,14 +309,15 @@ class StudentControllerTest {
 
     @Test
     void 異常系_入力チェック_受講生詳細の受講生で住所が空欄だったときに入力チェックに掛かること() {
-        Student student = new Student();
-        student.setName("江並公史");
-        student.setKana("エナミコウジ");
-        student.setNickname("こーじ");
-        student.setEmail("test@example.com");
-        student.setAddress(null);
-        student.setAge(36);
-        student.setGender("男");
+        Student student = Student.builder()
+                .name("江並公史")
+                .kana("エナミコウジ")
+                .nickname("こーじ")
+                .email("test@example.com")
+                .address(null)      //不正な空の住所
+                .age(36)
+                .gender("男")
+                .build();
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
@@ -317,14 +327,15 @@ class StudentControllerTest {
 
     @Test
     void 異常系_入力チェック_受講生詳細の受講生で年齢が空欄だったときに入力チェックに掛かること() {
-        Student student = new Student();
-        student.setName("江並公史");
-        student.setKana("エナミコウジ");
-        student.setNickname("こーじ");
-        student.setEmail("test@example.com");
-        student.setAddress("奈良県,奈良市");
-        student.setAge(null);
-        student.setGender("男");
+        Student student = Student.builder()
+                .name("江並公史")
+                .kana("エナミコウジ")
+                .nickname("こーじ")
+                .email("test@example.com")
+                .address("奈良県,奈良市")
+                .age(null)      //不正な空の年齢
+                .gender("男")
+                .build();
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
@@ -334,14 +345,15 @@ class StudentControllerTest {
 
     @Test
     void 異常系_入力チェック_受講生詳細の受講生で性別が空欄だったときに入力チェックに掛かること() {
-        Student student = new Student();
-        student.setName("江並公史");
-        student.setKana("エナミコウジ");
-        student.setNickname("こーじ");
-        student.setEmail("test@example.com");
-        student.setAddress("奈良県,奈良市");
-        student.setAge(36);
-        student.setGender(null);
+        Student student = Student.builder()
+                .name("江並公史")
+                .kana("エナミコウジ")
+                .nickname("こーじ")
+                .email("test@example.com")
+                .address("奈良県,奈良市")
+                .age(36)
+                .gender(null)       //不正な空の性別
+                .build();
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
@@ -351,14 +363,15 @@ class StudentControllerTest {
 
     @Test
     void 異常系_入力チェック_受講生詳細の受講生で性別が期待値以外だったときに入力チェックに掛かること() {
-        Student student = new Student();
-        student.setName("江並公史");
-        student.setKana("エナミコウジ");
-        student.setNickname("こーじ");
-        student.setEmail("test@example.com");
-        student.setAddress("奈良県,奈良市");
-        student.setAge(36);
-        student.setGender("男性");
+        Student student = Student.builder()
+                .name("江並公史")
+                .kana("エナミコウジ")
+                .nickname("こーじ")
+                .email("test@example.com")
+                .address("奈良県,奈良市")
+                .age(36)
+                .gender("男性")       //期待値以外の性別
+                .build();
 
         Set<ConstraintViolation<Student>> violations = validator.validate(student);
 
@@ -369,8 +382,9 @@ class StudentControllerTest {
 
     @Test
     void 異常系_入力チェック_受講生詳細のコース情報でコース名が期待値以外だったときに入力チェックに掛かること() {
-        StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setCourse("ピアノ");
+        StudentCourse studentCourse = StudentCourse.builder()
+                .course("ピアノ")      //期待値以外のコース名
+                .build();
 
         Set<ConstraintViolation<StudentCourse>> violations = validator.validate(studentCourse);
 
