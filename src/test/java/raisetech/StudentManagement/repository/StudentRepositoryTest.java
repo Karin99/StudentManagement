@@ -46,7 +46,7 @@ class StudentRepositoryTest {
 
     @Test
     void 異常系_対象の受講生IDがstudentsテーブルに存在しないときに空のStudentを返すこと() {
-        String studentId = "999";
+        String studentId = "999";       //存在しない受講生ID
 
         Student actual = sut.searchStudent(studentId);
 
@@ -74,7 +74,7 @@ class StudentRepositoryTest {
 
     @Test
     void 異常系_対象の受講生IDがstudents_coursesテーブルに存在しないときに空のListを返すこと() {
-        String studentId = "999";
+        String studentId = "999";       //存在しない受講生ID
 
         List<StudentCourse> actual = sut.searchStudentCourse(studentId);
 
@@ -83,16 +83,17 @@ class StudentRepositoryTest {
 
     @Test
     void 正常系_受講生の新規登録を実行できること() {
-        Student student = new Student();
-        student.setName("伊藤一郎");
-        student.setKana("イトウイチロウ");
-        student.setNickname("いっくん");
-        student.setEmail("ichi@example.com");
-        student.setAddress("京都府");
-        student.setAge(40);
-        student.setGender("その他");
-        student.setRemark("特になし");
-        student.setDeleted(false);
+        Student student = Student.builder()
+                .name("伊藤一郎")
+                .kana("イトウイチロウ")
+                .nickname("いっくん")
+                .email("ichi@example.com")
+                .address("京都府,京都市")
+                .age(40)
+                .gender("その他")
+                .remark("特になし")
+                .isDeleted(false)
+                .build();
 
         sut.registerStudent(student);
 
@@ -104,11 +105,12 @@ class StudentRepositoryTest {
     void 正常系_受講生コースの新規登録を実行できること() {
         LocalDateTime now = LocalDateTime.now();
         String studentId = "6";
-        StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setStudentId(studentId);
-        studentCourse.setCourse("ピアノコース");
-        studentCourse.setStartAt(now);
-        studentCourse.setCompleteAt(now.plusYears(1));
+        StudentCourse studentCourse = StudentCourse.builder()
+                .studentId(studentId)
+                .course("ピアノコース")
+                .startAt(now)
+                .completeAt(now.plusYears(1))
+                .build();
 
         sut.registerStudentCourse(studentCourse);
 
@@ -133,14 +135,15 @@ class StudentRepositoryTest {
         String newRemark = "氏名・メールアドレス・住所：変更歴あり";
         boolean newDeleted = true;
 
-        Student student = new Student();
-        student.setId(studentId);
-        student.setName(newName);
-        student.setKana(newKana);
-        student.setEmail(newEmail);
-        student.setAddress(newAddress);
-        student.setRemark(newRemark);
-        student.setDeleted(newDeleted);
+        Student student = Student.builder()
+                .id(studentId)
+                .name(newName)
+                .kana(newKana)
+                .email(newEmail)
+                .address(newAddress)
+                .remark(newRemark)
+                .isDeleted(newDeleted)
+                .build();
 
         sut.updateStudent(student);
 
@@ -155,7 +158,7 @@ class StudentRepositoryTest {
 
     @Test
     void 異常系_対象の受講生IDがstudentsテーブルに存在しないときに何も更新されないこと() {
-        String studentId = "999";
+        String studentId = "999";       // 存在しない受講生ID
         String newName = "山本花子";
         String newKana = "ヤマモトハナコ";
         String newEmail = "hanako.yamamoto@example.com";
@@ -163,14 +166,15 @@ class StudentRepositoryTest {
         String newRemark = "氏名・メールアドレス・住所：変更歴あり";
         boolean newDeleted = true;
 
-        Student student = new Student();
-        student.setId(studentId);
-        student.setName(newName);
-        student.setKana(newKana);
-        student.setEmail(newEmail);
-        student.setAddress(newAddress);
-        student.setRemark(newRemark);
-        student.setDeleted(newDeleted);
+        Student student = Student.builder()
+                .id(studentId)
+                .name(newName)
+                .kana(newKana)
+                .email(newEmail)
+                .address(newAddress)
+                .remark(newRemark)
+                .isDeleted(newDeleted)
+                .build();
 
         sut.updateStudent(student);
 
@@ -189,9 +193,10 @@ class StudentRepositoryTest {
         String studentId = "3";
         String newCourse = "ボーカルコース";
 
-        StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setCourseId(courseId);
-        studentCourse.setCourse(newCourse);
+        StudentCourse studentCourse = StudentCourse.builder()
+                .courseId(courseId)
+                .course(newCourse)
+                .build();
 
         sut.updateStudentCourse(studentCourse);
 
@@ -201,13 +206,14 @@ class StudentRepositoryTest {
 
     @Test
     void 異常系_対象の受講生コースIDがstudents_coursesテーブルに存在しないときに何も更新されないこと() {
-        String courseId = "999";
+        String courseId = "999";        //存在しない受講生コースID
         String studentId = "3";
         String newCourse = "ボーカルコース";
 
-        StudentCourse studentCourse = new StudentCourse();
-        studentCourse.setCourseId(courseId);
-        studentCourse.setCourse(newCourse);
+        StudentCourse studentCourse = StudentCourse.builder()
+                .courseId(courseId)
+                .course(newCourse)
+                .build();
 
         sut.updateStudentCourse(studentCourse);
 
