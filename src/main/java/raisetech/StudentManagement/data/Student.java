@@ -9,14 +9,22 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 /**
  * 受講生を扱うオブジェクト
  */
+@Builder
+@NoArgsConstructor
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Schema(description = "受講生")
+@Getter
+@Setter
 public class Student {
 
     @Size(min = 1, max = 3, message = "IDは3桁までにする必要があります")
