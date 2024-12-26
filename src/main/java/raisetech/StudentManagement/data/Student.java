@@ -7,13 +7,17 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 /**
  * 受講生を扱うオブジェクト
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Schema(description = "受講生")
 @Getter
 @Setter
