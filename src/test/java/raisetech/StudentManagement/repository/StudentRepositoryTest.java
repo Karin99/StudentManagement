@@ -7,6 +7,7 @@ import raisetech.StudentManagement.data.Student;
 import raisetech.StudentManagement.data.StudentCourse;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -21,7 +22,16 @@ class StudentRepositoryTest {
     void 正常系_受講生の全件検索を実行できること() {
         List<Student> actual = sut.search();
 
+        List<Student> expected = new ArrayList<>();
+        expected.add(sut.searchStudent("1"));
+        expected.add(sut.searchStudent("2"));
+        expected.add(sut.searchStudent("3"));
+        expected.add(sut.searchStudent("4"));
+        expected.add(sut.searchStudent("5"));
+        expected.add(sut.searchStudent("6"));
+
         assertThat(actual.size()).isEqualTo(6);
+        assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
     }
 
     @Test
