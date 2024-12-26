@@ -23,12 +23,12 @@ class StudentRepositoryTest {
         List<Student> actual = sut.search();
 
         List<Student> expected = new ArrayList<>();
-        expected.add(sut.searchStudent("1"));
-        expected.add(sut.searchStudent("2"));
-        expected.add(sut.searchStudent("3"));
-        expected.add(sut.searchStudent("4"));
-        expected.add(sut.searchStudent("5"));
-        expected.add(sut.searchStudent("6"));
+        expected.add(new Student("1", "佐藤太郎", "サトウタロウ", "たろたん", "taro@example.com", "東京都", 20, "男", "特になし", false));
+        expected.add(new Student("2", "鈴木次郎", "スズキジロウ", "じろう", "jiro.suzuki@example.com", "大阪府", 28, "男", "特になし", false));
+        expected.add(new Student("3", "田中花子", "タナカハナコ", "はなこ", "hanako.tanaka@example.com", "愛知県", 25, "女", "特になし", false));
+        expected.add(new Student("4", "高橋美咲", "タカハシミサキ", "みさき", "misaki.takahashi@example.com", "北海道", 32, "女", "特になし", false));
+        expected.add(new Student("5", "山田健", "ヤマダケン", "けん", "ken.yamada@example.com", "福岡県", 27, "その他", "特になし", false));
+        expected.add(new Student("6", "渡辺直美", "ワタナベナオミ", "ナオミ", "naomi@example.com", "アメリカ", 36, "女", "特になし", false));
 
         assertThat(actual.size()).isEqualTo(6);
         assertThat(actual).containsExactlyInAnyOrderElementsOf(expected);
