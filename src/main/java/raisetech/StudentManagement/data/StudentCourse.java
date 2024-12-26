@@ -18,9 +18,9 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Schema(description = "受講生コース情報")
 @Getter
 @Setter
+@Schema(description = "受講生コース情報")
 public class StudentCourse {
 
     @JsonProperty(access = JsonProperty.Access.READ_ONLY)
