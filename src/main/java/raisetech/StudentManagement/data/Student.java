@@ -6,16 +6,16 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 /**
  * 受講生を扱うオブジェクト
  */
-@Data
-@AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@EqualsAndHashCode
 @Schema(description = "受講生")
 public class Student {
 
@@ -51,4 +51,39 @@ public class Student {
 
     private boolean isDeleted;
 
+    public Student(String id, String name, String kana, String nickname, String email, String address, Integer age, String gender, String remark, boolean isDeleted) {
+        this.id = id;
+        this.name = name;
+        this.kana = kana;
+        this.nickname = nickname;
+        this.email = email;
+        this.address = address;
+        this.age = age;
+        this.gender = gender;
+        this.remark = remark;
+        this.isDeleted = isDeleted;
+    }
+
+    public Student(String id, String name, String kana, String nickname, String email, String address, Integer age, String gender) {
+        this.id = id;
+        this.name = name;
+        this.kana = kana;
+        this.nickname = nickname;
+        this.email = email;
+        this.address = address;
+        this.age = age;
+        this.gender = gender;
+    }
+
+    public Student(String name, String kana, String nickname, String email, String address, Integer age, String gender, String remark, boolean isDeleted) {
+        this.name = name;
+        this.kana = kana;
+        this.nickname = nickname;
+        this.email = email;
+        this.address = address;
+        this.age = age;
+        this.gender = gender;
+        this.remark = remark;
+        this.isDeleted = isDeleted;
+    }
 }
