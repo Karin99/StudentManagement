@@ -52,7 +52,7 @@ class StudentRepositoryTest {
 
     @Test
     void 異常系_対象の受講生IDがstudentsテーブルに存在しないときに空のStudentを返すこと() {
-        String studentId = "999";       //存在しない受講生ID
+        String studentId = "999";       // 存在しない受講生ID
 
         Student actual = sut.searchStudent(studentId);
 
@@ -80,7 +80,7 @@ class StudentRepositoryTest {
 
     @Test
     void 異常系_対象の受講生IDがstudents_coursesテーブルに存在しないときに空のListを返すこと() {
-        String studentId = "999";       //存在しない受講生ID
+        String studentId = "999";       // 存在しない受講生ID
 
         List<StudentCourse> actual = sut.searchStudentCourse(studentId);
 
@@ -89,17 +89,16 @@ class StudentRepositoryTest {
 
     @Test
     void 正常系_受講生の新規登録を実行できること() {
-        Student student = Student.builder()
-                .name("伊藤一郎")
-                .kana("イトウイチロウ")
-                .nickname("いっくん")
-                .email("ichi@example.com")
-                .address("京都府,京都市")
-                .age(40)
-                .gender("その他")
-                .remark("特になし")
-                .isDeleted(false)
-                .build();
+        Student student = new Student(
+                "伊藤一郎",
+                "イトウイチロウ",
+                "いっくん",
+                "ichi@example.com",
+                "京都府,京都市",
+                40,
+                "その他",
+                "特になし",
+                false);
 
         sut.registerStudent(student);
 
@@ -111,12 +110,11 @@ class StudentRepositoryTest {
     void 正常系_受講生コースの新規登録を実行できること() {
         LocalDateTime now = LocalDateTime.now();
         String studentId = "6";
-        StudentCourse studentCourse = StudentCourse.builder()
-                .studentId(studentId)
-                .course("ピアノコース")
-                .startAt(now)
-                .completeAt(now.plusYears(1))
-                .build();
+        StudentCourse studentCourse = new StudentCourse(
+                studentId,
+                "ピアノコース",
+                now,
+                now.plusYears(1));
 
         sut.registerStudentCourse(studentCourse);
 
@@ -136,59 +134,55 @@ class StudentRepositoryTest {
         String studentId = "3";
         String newName = "山本花子";
         String newKana = "ヤマモトハナコ";
+        String newNickname = "オハナ";
         String newEmail = "hanako.yamamoto@example.com";
         String newAddress = "静岡県";
+        int newAge = 26;
+        String newGender = "その他";
         String newRemark = "氏名・メールアドレス・住所：変更歴あり";
         boolean newDeleted = true;
-
-        Student student = Student.builder()
-                .id(studentId)
-                .name(newName)
-                .kana(newKana)
-                .email(newEmail)
-                .address(newAddress)
-                .remark(newRemark)
-                .isDeleted(newDeleted)
-                .build();
+        Student student = new Student(studentId, newName, newKana, newNickname, newEmail,
+                newAddress, newAge, newGender, newRemark, newDeleted);
 
         sut.updateStudent(student);
 
         Student actual = sut.searchStudent(studentId);
         assertThat(actual.getName()).isEqualTo(newName);
         assertThat(actual.getKana()).isEqualTo(newKana);
+        assertThat(actual.getNickname()).isEqualTo(newNickname);
         assertThat(actual.getEmail()).isEqualTo(newEmail);
         assertThat(actual.getAddress()).isEqualTo(newAddress);
+        assertThat(actual.getAge()).isEqualTo(newAge);
+        assertThat(actual.getGender()).isEqualTo(newGender);
         assertThat(actual.getRemark()).isEqualTo(newRemark);
         assertThat(actual.isDeleted()).isEqualTo(newDeleted);
     }
 
     @Test
     void 異常系_対象の受講生IDがstudentsテーブルに存在しないときに何も更新されないこと() {
-        String studentId = "999";       // 存在しない受講生ID
+        String studentId = "999";
         String newName = "山本花子";
         String newKana = "ヤマモトハナコ";
+        String newNickname = "オハナ";
         String newEmail = "hanako.yamamoto@example.com";
         String newAddress = "静岡県";
+        int newAge = 26;
+        String newGender = "その他";
         String newRemark = "氏名・メールアドレス・住所：変更歴あり";
         boolean newDeleted = true;
-
-        Student student = Student.builder()
-                .id(studentId)
-                .name(newName)
-                .kana(newKana)
-                .email(newEmail)
-                .address(newAddress)
-                .remark(newRemark)
-                .isDeleted(newDeleted)
-                .build();
+        Student student = new Student(studentId, newName, newKana, newNickname, newEmail,
+                newAddress, newAge, newGender, newRemark, newDeleted);
 
         sut.updateStudent(student);
 
         Student actual = sut.searchStudent("3");
         assertThat(actual.getName()).isNotEqualTo(newName);
         assertThat(actual.getKana()).isNotEqualTo(newKana);
+        assertThat(actual.getNickname()).isNotEqualTo(newNickname);
         assertThat(actual.getEmail()).isNotEqualTo(newEmail);
         assertThat(actual.getAddress()).isNotEqualTo(newAddress);
+        assertThat(actual.getAge()).isNotEqualTo(newAge);
+        assertThat(actual.getGender()).isNotEqualTo(newGender);
         assertThat(actual.getRemark()).isNotEqualTo(newRemark);
         assertThat(actual.isDeleted()).isNotEqualTo(newDeleted);
     }
@@ -196,34 +190,24 @@ class StudentRepositoryTest {
     @Test
     void 正常系_受講生コースIDに紐づく受講生コース情報の更新を実行できること() {
         String courseId = "8";
-        String studentId = "3";
         String newCourse = "ボーカルコース";
-
-        StudentCourse studentCourse = StudentCourse.builder()
-                .courseId(courseId)
-                .course(newCourse)
-                .build();
+        StudentCourse studentCourse = new StudentCourse(courseId, newCourse);
 
         sut.updateStudentCourse(studentCourse);
 
-        List<StudentCourse> actual = sut.searchStudentCourse(studentId);
+        List<StudentCourse> actual = sut.searchStudentCourse("3");
         assertThat(actual.get(1).getCourse()).isEqualTo(newCourse);
     }
 
     @Test
     void 異常系_対象の受講生コースIDがstudents_coursesテーブルに存在しないときに何も更新されないこと() {
-        String courseId = "999";        //存在しない受講生コースID
-        String studentId = "3";
+        String courseId = "999";        // 存在しない受講生コースID
         String newCourse = "ボーカルコース";
-
-        StudentCourse studentCourse = StudentCourse.builder()
-                .courseId(courseId)
-                .course(newCourse)
-                .build();
+        StudentCourse studentCourse = new StudentCourse(courseId, newCourse);
 
         sut.updateStudentCourse(studentCourse);
 
-        List<StudentCourse> actual = sut.searchStudentCourse(studentId);
+        List<StudentCourse> actual = sut.searchStudentCourse("3");
         assertThat(actual.get(0).getCourse()).isNotEqualTo(newCourse);
         assertThat(actual.get(1).getCourse()).isNotEqualTo(newCourse);
     }
